@@ -26,14 +26,6 @@ struct ipheader {
   struct  in_addr    iph_destip;   //Destination IP address 
 };
 
-struct udpheader {
-  u_int16_t udp_sport;/* source port */
-  u_int16_t udp_dport;/* destination port */
-  u_int16_t udp_ulen; /* udp length */
-  u_int16_t udp_sum;  /* udp checksum */
-};
-
-
 void got_packet(u_char *args, const struct pcap_pkthdr *header, 
                               const u_char *packet)
 {
@@ -53,11 +45,6 @@ void got_packet(u_char *args, const struct pcap_pkthdr *header,
             return;
         case IPPROTO_UDP:
             printf("   Protocol: UDP\n");
-            struct udpheader *udp = (struct udpheader *)
-                        (packet + sizeof(struct ethheader) + sizeof(struct ipheader));
-            char *msg = malloc(udp->udp_ulen * sizeof(char));
-            msg = packet +  sizeof(struct ethheader) + sizeof(struct ipheader) + sizeof(struct udpheader);
-            printf(" Message: %s\n", msg);
             return;
         case IPPROTO_ICMP:
             printf("   Protocol: ICMP\n");
